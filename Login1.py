@@ -34,7 +34,7 @@ def register_user():
         msg.pack()
         print("Registration Sucessfull")
         
-        data = {'name': name1, 'vehicle_no': vehicle_no1, 'RC_Book_no': rc_book_no1, 'DL_no': dl_no1}
+        data = {'Name': name1, 'Vehicle_no': vehicle_no1, 'RC_Book_no': rc_book_no1, 'DL_no': dl_no1}
         db.child('Users').child(vehicle_no1).set(data)
         
         screen1.destroy()
@@ -52,8 +52,8 @@ def register_user():
 def register():
     global screen1
     screen1 = Toplevel(screen)
-    screen1.title ("Register")
-    screen1.geometry ("300x250")
+    screen1.title ("A.I.S.A")
+    screen1.geometry ("500x500")
 
     global username,password,name,vehicle_no,rc_book_no,dl_no
 
@@ -64,6 +64,7 @@ def register():
     rc_book_no = StringVar()
     dl_no = StringVar()
 
+    Label(screen1,text="Register", bg="grey", width = '300', height = '2', font=("Roboto", 13)).pack()
     Label(text="").pack()
     Label(screen1,text="Name").pack()
     Entry(screen1,textvariable = name).pack()
@@ -73,7 +74,7 @@ def register():
     Entry(screen1,textvariable = rc_book_no).pack()
     Label(screen1,text="Driving License Number").pack()
     Entry(screen1,textvariable = dl_no).pack()
-    Label(screen1,text="Username").pack()
+    Label(screen1,text="Email").pack()
     Entry(screen1,textvariable = username).pack()
     Label(screen1,text="Password").pack()
     Entry(screen1,textvariable = password,show='*').pack()
@@ -109,22 +110,24 @@ def login_user():
 def login():
     global screen2
     screen2 = Toplevel(screen)
-    screen2.title ("Login")
-    screen2.geometry ("300x250")
+    screen2.title ("A.I.S.A")
+    screen2.geometry ("500x500")
     
     global login_username, login_password
 
     login_username = StringVar()
     login_password = StringVar()
 
-    Label(screen2,text="AISA", bg="grey", width = '300', height = '2', font=("Calibri", 13)).pack()
+    Label(screen2,text="Login", bg="grey", width = '300', height = '2', font=("Roboto", 13)).pack()
     Label(screen2,text="").pack()
-    Label(screen2,text="Username").pack()
-    Entry(screen2,textvariable = login_username).pack()
-    Label(screen2,text="Password").pack()
-    Entry(screen2,textvariable = login_password,show='*').pack()
-    Label(text="").pack()
-    Button(screen2, text = "Login", width =10, height = 1, command = login_user).pack()
+    Label(screen2,text="").pack()
+    Label(screen2,text="Email", font=("Roboto", 10)).pack()
+    Entry(screen2,textvariable = login_username, width=30).pack()
+    Label(screen2,text="").pack()
+    Label(screen2,text="Password", font=("Roboto", 10)).pack()
+    Entry(screen2,textvariable = login_password,show='*',width=30).pack()
+    Label(screen2,text="").pack()
+    Button(screen2, text = "Login", width =30, height = 2, command = login_user, font=("Roboto", 10)).pack()
 
 
 
@@ -134,13 +137,13 @@ def login():
 def main_screen():
     global screen
     screen = Tk()
-    screen.geometry("300x250")
+    screen.geometry("500x500")
     screen.title("A.I.S.A")
-    Label(text="AISA", bg="grey", width = '300', height = '2', font=("Calibri", 13)).pack()
+    Label(text="An Intelligent System for Automobiles", bg="grey", width = '300', height = '3', font=("Roboto", 16)).pack()
     Label(text="").pack()
-    Button(text="Login", width = '30', height = '2', command = login).pack()
+    Button(text="Login", width = '30', height = '2', command = login, font=("Roboto", 10)).pack()
     Label(text="").pack()
-    Button(text="Register", width = '30', height = '2', command = register).pack()
+    Button(text="Register", width = '30', height = '2', command = register, font=("Roboto", 10)).pack()
 
     screen.mainloop()
 
