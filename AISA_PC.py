@@ -1,3 +1,13 @@
+#https://www.youtube.com/watch?v=5sEm7RcRF_g
+#https://www.youtube.com/watch?v=clP6W7W79MM
+#https://www.youtube.com/watch?v=t9Ed5QyO7qY
+#https://www.geeksforgeeks.org/python-get-google-map-image-specified-location-using-google-static-maps-api/
+#https://python-visualization.github.io/folium/         -- Documentation
+#https://www.youtube.com/watch?v=fSglTrjhNYs            -- Google maps plotting points
+#https://www.youtube.com/watch?v=QpBmO35pmVE&list=PL2UmzTIzxgL5LiQHwUFtf9mun2I99jdc-&index=1    -- Folium full tutorial
+
+
+
 from tkinter import *
 import pyrebase
 
@@ -34,7 +44,7 @@ def register_user():
         msg = Message(screen1, text = "Registration sucessfull!")  
         msg.pack()
         
-        data = {'Name': name1, 'Vehicle_no': vehicle_no1, 'RC_Book_no': rc_book_no1, 'DL_no': dl_no1, 'Username': username_info}
+        data = {'Name': name1, 'Vehicle_no': vehicle_no1, 'RC_Book_no': rc_book_no1, 'DL_no': dl_no1, 'Username': username_info, 'Balance': '0'}
         db.child('Users').child(vehicle_no1).set(data)
         
         print("Registration Sucessfull")
@@ -66,7 +76,7 @@ def register():
     rc_book_no = StringVar()
     dl_no = StringVar()
 
-    Label(screen1,text="Register", bg="grey", width = '300', height = '2', font=("Roboto", 13)).pack()
+    Label(screen1,text="Register", bg="#303030", fg = "white", width = '300', height = '2', font=("Roboto", 13)).pack()
     Label(text="").pack()
     Label(screen1,text="Name").pack()
     Entry(screen1,textvariable = name).pack()
@@ -84,6 +94,8 @@ def register():
     Button(screen1, text = "Register", width =10, height = 1, command = register_user).pack()
 
 
+def recharge():
+    print("Recharge sucessfull")
 
 
 #Screen after sucessfull login
@@ -96,17 +108,19 @@ def logged_in():
     screen3.title("A.I.S.A")
     screen3.geometry("1000x800")
     Label(screen3,text="").pack()
-    label1=Label(screen3,text="Vehicle Number:", font=("Roboto", 13)).place(x=20,y=20)
-    users = db.child("Users").child(login_vehicle_no1).get()
 
+    #Pulling data from database according to vehicle number
+    users = db.child("Users").child(login_vehicle_no1).get()
+    #Sperating values
     dict1 = users.val()
     dl_no_logged_in = dict1['DL_no']
     name_logged_in = dict1['Name']
     rc_book_no_logged_in = dict1['RC_Book_no']
+    balance_logged_in = dict1['Balance']
 
-    
-
-
+    Label(screen3,text="Vehicle Number  :  "+str(login_vehicle_no1), font=("Roboto", 13)).place(x=20,y=20)
+    Label(screen3,text="Balance : "+str(balance_logged_in), font=("Roboto", 13)).place(x=825,y=20)
+    Button(screen3, text = "Recharge", width =11, height = 1, command = recharge, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=60)
 
 
 
@@ -145,7 +159,7 @@ def login():
     login_password = StringVar()
     login_vehicle_no = StringVar()
 
-    Label(screen2,text="Login", bg="grey", width = '300', height = '2', font=("Roboto", 13)).pack()
+    Label(screen2,text="Login", bg="#303030", fg = "white", width = '300', height = '2', font=("Roboto", 13)).pack()
     Label(screen2,text="").pack()
     Label(screen2,text="").pack()
     Label(screen2,text="Email", font=("Roboto", 10)).pack()
@@ -167,11 +181,11 @@ def main_screen():
     screen = Tk()
     screen.geometry("500x500")
     screen.title("A.I.S.A")
-    Label(text="An Intelligent System for Automobiles", bg="grey", width = '300', height = '3', font=("Roboto", 16)).pack()
+    Label(text="An Intelligent System for Automobiles", bg="#303030", fg = "white", width = '300', height = '3', font=("Roboto", 18)).pack()
     Label(text="").pack()
-    Button(text="Login", width = '30', height = '2', command = login, font=("Roboto", 10)).pack()
+    Button(text="Login", width = '30', height = '2', command = login, font=("Roboto", 14, 'bold'), bg = '#BEBEBE', fg = '#000033').pack()
     Label(text="").pack()
-    Button(text="Register", width = '30', height = '2', command = register, font=("Roboto", 10)).pack()
+    Button(text="Register", width = '30', height = '2', command = register, font=("Roboto", 14, 'bold'), bg = '#BEBEBE', fg = '#000033').pack()
     #logged_in()
     screen.mainloop()
 
