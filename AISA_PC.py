@@ -2,8 +2,8 @@
 #https://www.youtube.com/watch?v=clP6W7W79MM
 #https://www.youtube.com/watch?v=t9Ed5QyO7qY
 #https://www.geeksforgeeks.org/python-get-google-map-image-specified-location-using-google-static-maps-api/
-#https://python-visualization.github.io/folium/         -- Documentation
-#https://www.youtube.com/watch?v=fSglTrjhNYs            -- Google maps plotting points
+#https://python-visualization.github.io/folium/                                                 -- Documentation
+#https://www.youtube.com/watch?v=fSglTrjhNYs                                                    -- Google maps plotting points
 #https://www.youtube.com/watch?v=QpBmO35pmVE&list=PL2UmzTIzxgL5LiQHwUFtf9mun2I99jdc-&index=1    -- Folium full tutorial
 
 
@@ -94,7 +94,45 @@ def register():
     Button(screen1, text = "Register", width =10, height = 1, command = register_user).pack()
 
 
+def recharge_push():
+    
+    db= firebase.database()
+    recharge_vehicle_no = login_vehicle_no.get()
+    #Pushing data to DB
+    db.child("Users").child(recharge_vehicle_no).update({"Balance" : str(recharge_amount)})
+
 def recharge():
+    db= firebase.database()
+    #Pulling balance from db
+
+
+    recharge_vehicle_no = login_vehicle_no.get()
+    
+    users = db.child("Users").child(recharge_vehicle_no).get()
+    dict1 = users.val()
+    
+    global recharge_amount
+
+    screen4 = Toplevel(screen)
+    screen4.title("A.I.S.A")
+    screen4.geometry("500x500")
+    Label(screen4,text="Recharge", bg="#303030", fg = "white", width = '300', height = '2', font=("Roboto", 13)).pack()
+    Label(screen4,text="").pack()
+    amount = StringVar()
+    Entry(screen4,textvariable = amount, width=30).pack()
+    balance_recharge = int(dict1['Balance'])
+    amount = int(amount.get())
+    #Adding current balance to recharge amount
+    recharge_amount = balance_recharge + int(amount)
+
+    Label(screen4,text="").pack()
+    Button(screen4, text= "Recharge", width =10, height =1, command = recharge_push).pack()
+    Label(screen4,text="").pack()   
+    Button(screen4, text= "Quit", width =10, height =1, command = screen4.destroy).pack()
+
+
+
+
     print("Recharge sucessfull")
 
 
@@ -102,15 +140,14 @@ def recharge():
 def logged_in():
     db= firebase.database()
 
-    login_vehicle_no1 = login_vehicle_no.get()
+    logged_in_vehicle_no = login_vehicle_no.get()
 
     screen3 = Toplevel(screen)
     screen3.title("A.I.S.A")
     screen3.geometry("1000x800")
-    Label(screen3,text="").pack()
 
     #Pulling data from database according to vehicle number
-    users = db.child("Users").child(login_vehicle_no1).get()
+    users = db.child("Users").child(logged_in_vehicle_no).get()
     #Sperating values
     dict1 = users.val()
     dl_no_logged_in = dict1['DL_no']
@@ -118,25 +155,26 @@ def logged_in():
     rc_book_no_logged_in = dict1['RC_Book_no']
     balance_logged_in = dict1['Balance']
 
-    Label(screen3,text="Vehicle Number  :  "+str(login_vehicle_no1), font=("Roboto", 13)).place(x=20,y=20)
+    Label(screen3,text="").pack()
+    Label(screen3,text="Vehicle Number : " + str(logged_in_vehicle_no), font=("Roboto", 13)).place(x=20,y=20)
     Label(screen3,text="Balance : "+str(balance_logged_in), font=("Roboto", 13)).place(x=825,y=20)
     Button(screen3, text = "Recharge", width =11, height = 1, command = recharge, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=60)
-
+    Button(screen3, text = "Log out", width =11, height = 1, command = screen3.destroy, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=100)
 
 
 #Login authentication function
 def login_user():
     auth = firebase.auth()
 
-    username = login_username.get()
-    password = login_password.get()
+    username1 = login_username.get()
+    password1 = login_password.get()
 
     try:
-        login = auth.sign_in_with_email_and_password(username, password)
+        login = auth.sign_in_with_email_and_password(username1, password1)
         msg = Message(screen2, text = "Login sucessfull!")  
         msg.pack()
-        print("Login Sucessfull")
         logged_in()
+        print("Login Sucessfull")
         screen2.destroy()
     except:
         msg = Message(screen2, text = "Wrong Username/Password")  
@@ -186,7 +224,8 @@ def main_screen():
     Button(text="Login", width = '30', height = '2', command = login, font=("Roboto", 14, 'bold'), bg = '#BEBEBE', fg = '#000033').pack()
     Label(text="").pack()
     Button(text="Register", width = '30', height = '2', command = register, font=("Roboto", 14, 'bold'), bg = '#BEBEBE', fg = '#000033').pack()
-    #logged_in()
+    Label(text="").pack()
+    Button( text= "Quit", width = '30', height = '2', command = screen.destroy, font=("Roboto", 14, 'bold'), bg = '#CB4335', fg = '#000033').pack()
     screen.mainloop()
 
 
