@@ -69,6 +69,7 @@ def register():
 
     global username,password,name,vehicle_no,rc_book_no,dl_no
 
+    #Variable decelration for input boxes
     username = StringVar()
     password = StringVar()
     name =  StringVar()
@@ -94,37 +95,49 @@ def register():
     Button(screen1, text = "Register", width =10, height = 1, command = register_user).pack()
 
 
+#recharge sub function
 def recharge_push():
     
     db= firebase.database()
-    recharge_vehicle_no = login_vehicle_no.get()
-    #Pushing data to DB
-    db.child("Users").child(recharge_vehicle_no).update({"Balance" : str(recharge_amount)})
-
-def recharge():
-    db= firebase.database()
-    #Pulling balance from db
-
 
     recharge_vehicle_no = login_vehicle_no.get()
-    
+
+    #Pulling values from DB and type casting
     users = db.child("Users").child(recharge_vehicle_no).get()
     dict1 = users.val()
+    balance_recharge = int(dict1['Balance'])
+    amount1 = int(amount.get())
     
-    global recharge_amount
+    #Adding current balance to recharge amount
+    recharge_amount = balance_recharge + int(amount1)
 
+    #Pushing data to DB
+    try:
+        db.child("Users").child(recharge_vehicle_no).update({"Balance" : str(recharge_amount)})
+        msg = Message(screen4, text = "Recharge Sucessfull!")  
+        msg.pack()
+    except:
+        msg = Message(screen4, text = "Recharge Failed!")  
+        msg.pack()
+
+
+
+
+
+#recharge main function
+def recharge():
+    global amount 
+    amount = StringVar()
+
+    global screen4
     screen4 = Toplevel(screen)
     screen4.title("A.I.S.A")
     screen4.geometry("500x500")
+
+
     Label(screen4,text="Recharge", bg="#303030", fg = "white", width = '300', height = '2', font=("Roboto", 13)).pack()
     Label(screen4,text="").pack()
-    amount = StringVar()
     Entry(screen4,textvariable = amount, width=30).pack()
-    balance_recharge = int(dict1['Balance'])
-    amount = int(amount.get())
-    #Adding current balance to recharge amount
-    recharge_amount = balance_recharge + int(amount)
-
     Label(screen4,text="").pack()
     Button(screen4, text= "Recharge", width =10, height =1, command = recharge_push).pack()
     Label(screen4,text="").pack()   
@@ -132,8 +145,6 @@ def recharge():
 
 
 
-
-    print("Recharge sucessfull")
 
 
 #Screen after sucessfull login
@@ -160,6 +171,8 @@ def logged_in():
     Label(screen3,text="Balance : "+str(balance_logged_in), font=("Roboto", 13)).place(x=825,y=20)
     Button(screen3, text = "Recharge", width =11, height = 1, command = recharge, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=60)
     Button(screen3, text = "Log out", width =11, height = 1, command = screen3.destroy, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=100)
+
+
 
 
 #Login authentication function
@@ -210,6 +223,7 @@ def login():
     Entry(screen2,textvariable = login_password,show='*',width=30).pack()
     Label(screen2,text="").pack()
     Button(screen2, text = "Login", width =30, height = 2, command = login_user, font=("Roboto", 10)).pack()
+
 
 
 
