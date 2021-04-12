@@ -10,8 +10,9 @@
 
 from tkinter import *
 import pyrebase
+import folium
 
-#Web APP Credentials for Firebase connection
+#Web App Credentials for Firebase connection
 firebaseConfig ={'apiKey': "AIzaSyDDOUUPzA2OuTT9deZcHCtBe88C3JmHUOI",
     'authDomain': "aisa-4b073.firebaseapp.com",
     'databaseURL': "https://aisa-4b073-default-rtdb.firebaseio.com",
@@ -22,6 +23,9 @@ firebaseConfig ={'apiKey': "AIzaSyDDOUUPzA2OuTT9deZcHCtBe88C3JmHUOI",
     'measurementId': "G-E7WH5S8B7P"}
 
 firebase = pyrebase.initialize_app(firebaseConfig)
+
+
+
 
 
 
@@ -54,6 +58,11 @@ def register_user():
     except:
         msg = Message(screen1, text = "Registration Unsucessfull!")  
         msg.pack()
+
+
+
+
+
 
 
 
@@ -95,6 +104,12 @@ def register():
     Button(screen1, text = "Register", width =10, height = 1, command = register_user).pack()
 
 
+
+
+
+
+
+
 #recharge sub function
 def recharge_push():
     
@@ -124,6 +139,11 @@ def recharge_push():
 
 
 
+
+
+
+
+
 #recharge main function
 def recharge():
     global amount 
@@ -147,6 +167,9 @@ def recharge():
 
 
 
+
+
+
 #Screen after sucessfull login
 def logged_in():
     db= firebase.database()
@@ -161,9 +184,9 @@ def logged_in():
     users = db.child("Users").child(logged_in_vehicle_no).get()
     #Sperating values
     dict1 = users.val()
-    dl_no_logged_in = dict1['DL_no']
-    name_logged_in = dict1['Name']
-    rc_book_no_logged_in = dict1['RC_Book_no']
+    #dl_no_logged_in = dict1['DL_no']
+    #name_logged_in = dict1['Name']
+    #rc_book_no_logged_in = dict1['RC_Book_no']
     balance_logged_in = dict1['Balance']
 
     Label(screen3,text="").pack()
@@ -171,6 +194,10 @@ def logged_in():
     Label(screen3,text="Balance : "+str(balance_logged_in), font=("Roboto", 13)).place(x=825,y=20)
     Button(screen3, text = "Recharge", width =11, height = 1, command = recharge, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=60)
     Button(screen3, text = "Log out", width =11, height = 1, command = screen3.destroy, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=100)
+
+
+
+
 
 
 
@@ -192,6 +219,10 @@ def login_user():
     except:
         msg = Message(screen2, text = "Wrong Username/Password")  
         msg.pack()
+
+
+
+
 
 
 
@@ -222,7 +253,12 @@ def login():
     Label(screen2,text="Password", font=("Roboto", 10)).pack()
     Entry(screen2,textvariable = login_password,show='*',width=30).pack()
     Label(screen2,text="").pack()
-    Button(screen2, text = "Login", width =30, height = 2, command = login_user, font=("Roboto", 10)).pack()
+    Button(screen2,text = "Login", width =30, height = 2, command = login_user, font=("Roboto", 10)).pack()
+
+
+
+
+
 
 
 
@@ -235,13 +271,13 @@ def main_screen():
     screen.title("A.I.S.A")
     Label(text="An Intelligent System for Automobiles", bg="#303030", fg = "white", width = '300', height = '3', font=("Roboto", 18)).pack()
     Label(text="").pack()
-    Button(text="Login", width = '30', height = '2', command = login, font=("Roboto", 14, 'bold'), bg = '#BEBEBE', fg = '#000033').pack()
+    Button(text="Login",width='30',height='2',command=login,font=("Roboto",14,'bold'),bg='#BEBEBE',fg='#000033').pack()
     Label(text="").pack()
-    Button(text="Register", width = '30', height = '2', command = register, font=("Roboto", 14, 'bold'), bg = '#BEBEBE', fg = '#000033').pack()
+    Button(text="Register",width='30',height='2',command=register,font=("Roboto",14,'bold'),bg='#BEBEBE',fg='#000033').pack()
     Label(text="").pack()
-    Button( text= "Quit", width = '30', height = '2', command = screen.destroy, font=("Roboto", 14, 'bold'), bg = '#CB4335', fg = '#000033').pack()
+    Button(text="Quit",width='30',height='2',command=screen.destroy,font=("Roboto",14,'bold'),bg='#CB4335',fg='#000033').pack()
+
     screen.mainloop()
 
 
 main_screen()
-
