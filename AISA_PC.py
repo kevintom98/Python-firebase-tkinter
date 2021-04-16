@@ -54,7 +54,6 @@ def register_user():
         print("Registration Sucessfull")
         
         screen1.destroy()
-    
     except:
         msg = Message(screen1, text = "Registration Unsucessfull!")  
         msg.pack()
@@ -93,7 +92,7 @@ def register():
     Label(screen1,text="Vehicle Number").pack()
     Entry(screen1,textvariable = vehicle_no).pack()
     Label(screen1,text="RC Book Number").pack()
-    Entry(screen1,textvariable = rc_book_no).pack()
+    Entry(screen1,textvariable = rc_book_no).pack() 
     Label(screen1,text="Driving License Number").pack()
     Entry(screen1,textvariable = dl_no).pack()
     Label(screen1,text="Email").pack()
@@ -269,6 +268,7 @@ def main_screen():
     screen = Tk()
     screen.geometry("500x500")
     screen.title("A.I.S.A")
+    
     Label(text="An Intelligent System for Automobiles", bg="#303030", fg = "white", width = '300', height = '3', font=("Roboto", 18)).pack()
     Label(text="").pack()
     Button(text="Login",width='30',height='2',command=login,font=("Roboto",14,'bold'),bg='#BEBEBE',fg='#000033').pack()
