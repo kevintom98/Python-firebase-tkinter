@@ -10,7 +10,6 @@
 
 from tkinter import *
 import pyrebase
-import folium
 
 #Web App Credentials for Firebase connection
 firebaseConfig ={'apiKey': "AIzaSyDDOUUPzA2OuTT9deZcHCtBe88C3JmHUOI",
@@ -84,7 +83,6 @@ def register():
     vehicle_no = StringVar()
     rc_book_no = StringVar()
     dl_no = StringVar()
-
     Label(screen1,text="Register", bg="#303030", fg = "white", width = '300', height = '2', font=("Roboto", 13)).pack()
     Label(text="").pack()
     Label(screen1,text="Name").pack()
@@ -92,7 +90,7 @@ def register():
     Label(screen1,text="Vehicle Number").pack()
     Entry(screen1,textvariable = vehicle_no).pack()
     Label(screen1,text="RC Book Number").pack()
-    Entry(screen1,textvariable = rc_book_no).pack() 
+    Entry(screen1,textvariable = rc_book_no).pack()
     Label(screen1,text="Driving License Number").pack()
     Entry(screen1,textvariable = dl_no).pack()
     Label(screen1,text="Email").pack()
@@ -183,22 +181,56 @@ def logged_in():
     users = db.child("Users").child(logged_in_vehicle_no).get()
     #Sperating values
     dict1 = users.val()
-    #dl_no_logged_in = dict1['DL_no']
-    #name_logged_in = dict1['Name']
-    #rc_book_no_logged_in = dict1['RC_Book_no']
+    dl_no_logged_in = dict1['DL_no']
+    name_logged_in = dict1['Name']
+    rc_book_no_logged_in = dict1['RC_Book_no']
     balance_logged_in = dict1['Balance']
 
     Label(screen3,text="").pack()
     Label(screen3,text="Vehicle Number : " + str(logged_in_vehicle_no), font=("Roboto", 13)).place(x=20,y=20)
+    Label(screen3,text="Name : " + str(name_logged_in), font=("Roboto", 13)).place(x=20,y=50)
+    Label(screen3,text="RC Book Number : " + str(rc_book_no_logged_in), font=("Roboto", 13)).place(x=20,y=80)
+    Label(screen3,text="DL Number : " + str(dl_no_logged_in), font=("Roboto", 13)).place(x=20,y=110)
+    
     Label(screen3,text="Balance : "+str(balance_logged_in), font=("Roboto", 13)).place(x=825,y=20)
     Button(screen3, text = "Recharge", width =11, height = 1, command = recharge, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=60)
     Button(screen3, text = "Log out", width =11, height = 1, command = screen3.destroy, font=("Roboto", 10), bg = '#202020', fg='#ffffff').place(x=825,y=100)
 
+    #Printing tracking details
+    users = db.child("Coordinates").child(logged_in_vehicle_no).get()
+    dict1 = users.val()
 
+    Label(screen3,text="Tracking details(lat,log):", font=("Roboto", 13)).place(x=20,y=250)
+    
+    yy=0
+    no=1
+    for x in dict1:
+        if(no<=5):
+            Label(screen3,text=str(no)+": "+ str(dict1[x]), font=("Roboto", 13)).place(x=20,y=(280+yy))
+            yy=yy+30
+            no=no+1
+            Label(screen3,text="").pack()
+        else:
+            break
+    
 
+    #Printing tax collection details
+    users = db.child("Tax_Collected:").child(logged_in_vehicle_no).get()
+    dict1 = users.val()
+    
+    Label(screen3,text="Tax collection details:", font=("Roboto", 13)).place(x=500,y=250)
 
-
-
+    yy=0
+    no=1
+    x=0
+    for x in dict1:
+        if(no<=5):
+            Label(screen3,text=str(no)+": "+ str(dict1[x]), font=("Roboto", 13)).place(x=50,y=(280+yy))
+            yy=yy+30
+            no=no+1
+            Label(screen3,text="").pack()
+        else:
+            break
 
 
 #Login authentication function
@@ -215,11 +247,10 @@ def login_user():
         logged_in()
         print("Login Sucessfull")
         screen2.destroy()
-    except:
+    except Exception as e :
+        print(e)
         msg = Message(screen2, text = "Wrong Username/Password")  
         msg.pack()
-
-
 
 
 
