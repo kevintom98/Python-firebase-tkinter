@@ -212,26 +212,6 @@ def logged_in():
             Label(screen3,text="").pack()
         else:
             break
-    
-
-    #Printing tax collection details
-    users = db.child("Tax_Collected:").child(logged_in_vehicle_no).get()
-    dict1 = users.val()
-    
-    Label(screen3,text="Tax collection details:", font=("Roboto", 13)).place(x=500,y=250)
-
-    yy=0
-    no=1
-    x=0
-    for x in dict1:
-        if(no<=5):
-            Label(screen3,text=str(no)+": "+ str(dict1[x]), font=("Roboto", 13)).place(x=50,y=(280+yy))
-            yy=yy+30
-            no=no+1
-            Label(screen3,text="").pack()
-        else:
-            break
-
 
 #Login authentication function
 def login_user():
